@@ -1,4 +1,4 @@
-# advanced_programming_exam
+# Advanced programming exam
 Projects for advanced programming exam in Python and c++ . Collaborative work by Laura Balasso and Enrico Fallacara
 
 The repository contains two projects:
