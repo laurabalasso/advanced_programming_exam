@@ -50,8 +50,8 @@ def get_dict(file_lines,dict_type):
 
     if item not in d:
         d[item]= [i]
-        else:
-            d[item].append(i)
+    else:
+        d[item].append(i)
 
 return d
 
@@ -84,6 +84,38 @@ def readFile(self, file_name):
                         f.close()
                         self.parsePostcards()
 
+def writeFile(self, file_name = None):
+        '''
+        Writes the postcards saved in a new file.
+        If file_name already exists, it is overwritten.
+        if no argument is passed, writes in the current file.
+        '''
+        if file_name is None:
+            file_name = self._file
+        with open(file_name,"w") as f:
+            for line in self._postcards:
+                f.write(line + "\n")
+
+   def parsePostcards(self):
+        '''
+        Sets _date, _from and _to dictionaries.
+        '''
+        self._from = get_dict(self._postcards, "from")
+        self._date = get_dict(self._postcards, "date")
+        self._to = get_dict(self._postcards, "to")
+    
+    
+    def updateFile(self, file_name = None):
+        '''
+        Writes postcards to file.
+        If file_name already exists, new postcards are appended.
+        '''
+        if file_name is None:
+            file_name = self._file
+        with open(file_name,"a") as f:
+            for line in self._postcards:
+                f.write(line + "\n")
+
 
 def updateLists(self):
     '''
@@ -96,6 +128,39 @@ def updateLists(self):
                 f.close()
                 self._file = new_file
                     self.parsePostcards()
+    
+    def getPostcardsBySender(self,sender):
+        '''
+        Returns a list of postcards from a given sender.
+        '''
+        indexes = self._from.get(sender)
+        postcardsBySender = []
+        if indexes == None:
+            print("No postcards from " + sender)
+        else:
+            for i in indexes:
+                postcardsBySender.append(self._postcards[i])
+        return postcardsBySender
+    
+    def getPostcardsByReceiver(self,receiver):
+        '''
+        Returns a list of postcards to a given receiver.
+        '''
+        indexes = self._to.get(receiver)
+        postcardsByReceiver = []
+        if indexes == None:
+            print("No postcards to " + receiver)
+        else:
+            for i in indexes:
+                postcardsByReceiver.append(self._postcards[i])
+        return postcardsByReceiver
+    
+    
+    def getNumberOfPostcards(self):
+        '''
+        Returns the current number of postcards recorded.
+        '''
+        return len(self._postcards)
 
 
 def getPostcardsByDateRange(self, date_range):
