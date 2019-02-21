@@ -253,9 +253,10 @@ void BST<T1,T2>::insert(T1 key,T2 value){
         root = new Node<T1,T2>{std::make_pair(key,value),nullptr,nullptr};
         n_nodes++;
         height++;
+        tail = root;
     }
     else{                          //if the tree is not empty
-        insert(key,value, begin(),this->height);
+        insert(key,value, begin(), height);
     }
     
     
