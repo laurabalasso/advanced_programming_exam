@@ -4,8 +4,34 @@
  */
 
 #include "bst.h"
+#include <ctime>
+#include <map>
+#include <algorithm>
 
+template <typename T1, typename T2>
+/**
+    method that tests the balance function, printing the root and the tail of a given binary search before and after
+    balancing it.
+*/
+void balanceTest(BST<T1,T2> binary_tree){
 
+    std::cout<<"----------------------"<<std::endl;
+    std::cout<<"Binary search balance test"<<std::endl;
+    std::cout<<"----------------------"<<std::endl;
+
+    std::cout<<"Print the begin and the end of the NOT-balanced tree:"<<std::endl;
+    std::cout<<"begin: "<<binary_tree.begin()<<std::endl;
+    std::cout<<"end: "<<binary_tree.end()<<std::endl;
+    std::cout<<" ----------------------"<<std::endl;
+
+    binary_tree.balance();
+
+    std::cout<<"Print the root and the tail of the balanced tree:"<<std::endl;
+    std::cout<<"begin: "<<binary_tree.begin()<<std::endl;
+    std::cout<<"end: "<< binary_tree.end()<<std::endl;
+    binary_tree.clear();
+
+}
 
 template <typename T1, typename T2>
 /**
@@ -36,7 +62,20 @@ void clearTest(BST<T1,T2> binary_tree){
     binary_tree.clear();
     
 }
+template <typename T1,typename T2>
+/**
+    method that tests the find function, given a binary search tree and a key used to find the nodes inside the tree.
+*/
+void findTest(BST<T1,T2> binary_tree, T1 key){
 
+    std::cout<<"----------------------"<<std::endl;
+    std::cout<<"Binary search tree find test"<<std::endl;
+    std::cout<<"----------------------"<<std::endl;
+
+    std::cout<<"search for node with key equal to "<<key<<": "<<binary_tree.find(key)<<std::endl;
+    std::cout<<"search for node with a key that is not present in the tree: "<<binary_tree.find(-1)<<std::endl;
+    binary_tree.clear();
+}
 
 template <typename T1, typename T2>
 /**
@@ -81,6 +120,102 @@ void semanticTest(BST<T1,T2> binary_tree){
     binary_tree3.clear();
     binary_tree4.clear();
     binary_tree5.clear();
+}
+/**
+    method that compares the performance between our implementation of a binary search tree, not-balanced and balanced,
+    and a std::map, calculating the average time to find a single node. The parameter N is the number of the nodes that
+    will be inserted and the parameter num_attemps is thenumber of times the test is repeated, in order to achieve 
+    robustness and reproducibility of results.
+
+    This method can be adapted to the case of double-type keys,adapting the templates types and substituting the 
+    for loop that generates the random intgeres with the following one:
+
+    for(int i =0;i<N;i++){
+            double f = (double)rand() / RAND_MAX;
+            testVector.push_back(1 + f * (2*N));
+    }
+*/
+
+void performanceTest(int N,int num_attempts){
+    
+    std::cout<<"----------------------"<<std::endl;
+    std::cout<<"Binary search tree performance test"<<std::endl;
+    std::cout<<"Number of nodes choosen to run the test: "<<N<<std::endl;
+    std::cout<<"Number of attempts choosen to run the test: "<<num_attempts<<std::endl;
+    std::cout<<"----------------------"<<std::endl;
+  
+    double sumDiffNotBal=0;
+    double sumDiffBal=0;
+    double sumDiffMap=0;
+    std::vector<int> testVector;
+    BST<int,int> bst_test{};
+    std::map<int,int> test_map;
+    srand((unsigned)time(0));
+    clock_t begin;
+    clock_t end;
+    for(int j=0;j<num_attempts;j++){
+       
+       for(int i=0;i<N; i++){
+        int a = rand()%(2*N)+1;
+        testVector.push_back(a);
+        }
+       
+        for(int i=0;i<N; i++){
+        bst_test.insert(testVector[i],i+1);
+        test_map.insert(std::pair<int,int>(testVector[i],i+1));
+        }
+
+        std::random_shuffle(testVector.begin(),testVector.end());
+    /**    
+    //  Another version version of this test could be the following one, in which, instead of using std::random_shuffle,
+    //  we clear the testVector and we push into it other random values. This leads to an higher medium time to find a 
+    //  single node, because most of the generated numbers aren't present in the tree so the find function traverse the 
+    //  whole tree more times than than the other method.
+    
+        testVector.clear();
+
+        for(int i=0;i<N; i++){
+        int b = rand()%(2*N)+1;
+        testVector.push_back(b);
+        }
+    */
+        begin = std::clock();
+        for(int i=0;i<N;i++){
+            bst_test.find(testVector[i]);
+        }
+        end = std::clock();
+        double diff = (double)(end - begin)/ CLOCKS_PER_SEC;
+        sumDiffNotBal += diff;
+
+        bst_test.balance();
+
+        begin = std::clock();
+        for(int i=0;i<N;i++){
+            bst_test.find(testVector[i]);
+        }
+        end = std::clock();
+        diff = (double)(end - begin)/ CLOCKS_PER_SEC;
+        sumDiffBal += diff;
+
+        begin = std::clock();
+        for(int i=0;i<N;i++){
+            test_map.find(testVector[i]);
+        }
+        end = std::clock();
+        diff = (double)(end - begin)/ CLOCKS_PER_SEC;
+        sumDiffMap += diff;
+
+        testVector.clear();
+        test_map.clear();
+        bst_test.clear();
+    }
+    std::cout<<"Mean time to find a single node in a not-balanced BST: "<<(sumDiffNotBal/num_attempts)/N<<std::endl;
+    std::cout<<"---------------------------- "<<std::endl;
+    std::cout<<"Mean time to find a single node in a balanced BST: "<<(sumDiffBal/num_attempts)/N<<std::endl;
+    std::cout<<"---------------------------- "<<std::endl;
+    std::cout<<"Mean time to find a single node in a std::map: "<<(sumDiffMap/num_attempts)/N<<std::endl;
+    std::cout<<"---------------------------- "<<std::endl;
+    
 }
 
 int main(){
