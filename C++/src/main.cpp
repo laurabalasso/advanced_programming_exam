@@ -220,5 +220,29 @@ void performanceTest(int N,int num_attempts){
 
 int main(){
     
+    BST<int,int> binary_tree{};
+    binary_tree.insert(60,1);
+    binary_tree.insert(41,2);
+    binary_tree.insert(74,3);
+    binary_tree.insert(16,4);
+    binary_tree.insert(53,5);
+    binary_tree.insert(65,6);
+    binary_tree.insert(25,7);
+    binary_tree.insert(46,8);
+    binary_tree.insert(55,9);
+    binary_tree.insert(63,10);
+    binary_tree.insert(70,11);
+    binary_tree.insert(42,12);
+    binary_tree.insert(62,13);
+    binary_tree.insert(64,14);
+    std::cout<<"Print the tree in order: "<<std::endl;
+    binary_tree.print();
+    balanceTest(binary_tree);
+    clearTest(binary_tree);
+    findTest(binary_tree,42);
+    semanticTest(binary_tree);
+    performanceTest(1000,10);
+    binary_tree.clear();
+    
     return 0;
 }
