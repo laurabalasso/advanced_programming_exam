@@ -48,12 +48,12 @@ def get_dict(file_lines,dict_type):
                 print("invalid date format: line " , i , " will be skipped")
                 next
 
-    if item not in d:
-        d[item]= [i]
-    else:
-        d[item].append(i)
+        if item not in d:
+            d[item]= [i]
+        else:
+            d[item].append(i)
 
-return d
+    return d
 
 class PostcardList():
     def __init__(self,file_name = None):
@@ -96,7 +96,7 @@ class PostcardList():
             for line in self._postcards:
                 f.write(line + "\n")
 
-   def parsePostcards(self):
+    def parsePostcards(self):
         '''
         Sets _date, _from and _to dictionaries.
         '''
