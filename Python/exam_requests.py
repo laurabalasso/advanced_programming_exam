@@ -34,9 +34,9 @@ import datetime
 
 def get_dict(file_lines,dict_type):
     '''
-        Creates a dictionary extracting keys from postcards.
-        dict_type = "date", "from" or "to".
-        '''
+    Creates a dictionary extracting keys from postcards.
+    dict_type = "date", "from" or "to".
+    '''
     import re
     d = dict()
     for i in range(len(file_lines)):
@@ -71,20 +71,20 @@ class PostcardList():
             self._from = get_dict(self._postcards,"from")
             self._to = get_dict(self._postcards,"to")
 
-def readFile(self, file_name):
-    '''
+    def readFile(self, file_name):
+        '''
         Reads postcards from file and parse them.
         new_file is the name of a new existent file.
         '''
-            self._file = file_name
-                self._postcards = []
-                f = open(file_name, "r")
-                for line in f:
-                    self._postcards.append(line)
-                        f.close()
-                        self.parsePostcards()
+        self._file = file_name
+        self._postcards = []
+        f = open(file_name, "r")
+        for line in f:
+            self._postcards.append(line)
+        f.close()
+        self.parsePostcards()
 
-def writeFile(self, file_name = None):
+    def writeFile(self, file_name = None):
         '''
         Writes the postcards saved in a new file.
         If file_name already exists, it is overwritten.
@@ -116,18 +116,18 @@ def writeFile(self, file_name = None):
             for line in self._postcards:
                 f.write(line + "\n")
 
-
-def updateLists(self):
-    '''
+    def updateLists(self):
+        '''
         Reads postcards from file and updetes dictionaries.
         Does not erase already recorded postcards.
         '''
-            f = open(new_file, "r")
-            for line in f:
+        f = open(new_file, "r")
+        for line in f:
             self._postcards.append(line)
-                f.close()
-                self._file = new_file
-                    self.parsePostcards()
+        f.close()
+        self._file = new_file
+        self.parsePostcards()
+
     
     def getPostcardsBySender(self,sender):
         '''
@@ -163,19 +163,19 @@ def updateLists(self):
         return len(self._postcards)
 
 
-def getPostcardsByDateRange(self, date_range):
-'''
-Returns the postcards within a data range.
-data_range is a couple of strings date.
-'''
-dmin, dmax = date_range
-    if type(dmin) is not datetime.datetime :
-        dmin = datetime.datetime.strptime(dmin,"%Y-%m-%d").date()
+    def getPostcardsByDateRange(self, date_range):
+        '''
+        Returns the postcards within a data range.
+        data_range is a couple of strings date.
+        '''
+        dmin, dmax = date_range
+        if type(dmin) is not datetime.datetime :
+            dmin = datetime.datetime.strptime(dmin,"%Y-%m-%d").date()
         elif type(dmax) is not datetime.datetime :
             dmax = datetime.datetime.strptime(dmax,"%Y-%m-%d").date()
-    else:
-        dmin=dmin.date()
-        dmax=dmax.date()
+        else:
+            dmin=dmin.date()
+            dmax=dmax.date()
         p = []
         
         for key in self._date:
