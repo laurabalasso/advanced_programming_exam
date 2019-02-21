@@ -34,8 +34,10 @@ class BST{
 
     BST();
     BST(T1 key, T2 value);
+    BST(BST &bst);
     BST(BST &&bst) noexcept;
     ~BST() noexcept;
+    BST<T1,T2>& operator=(const BST<T1,T2>& bst) noexcept;
     BST<T1,T2>& operator=(const BST<T1,T2>&& bst) noexcept;
 
     
@@ -81,6 +83,24 @@ BST<T1,T2>::BST(T1 key,T2 value){
 
 template <typename T1, typename T2>
 /**
+ copy constructor, that creates a deep copy of a given binary search tree
+ */
+BST<T1,T2>::BST(BST &bst){
+    if constexpr (std::is_same<T2,std::string>::value){
+        root = nullptr;
+        head = new Node<T1,T2>{std::make_pair(NULL,""),root,root};
+    }
+    else{
+        root = nullptr;
+        head = new Node<T1,T2>{std::make_pair(NULL,NULL),root,root};
+    }
+    n_nodes = 0;
+    height = 0;
+    recursiveInsert(bst.root);
+}
+
+template <typename T1, typename T2>
+/**
     move constructor 
 */
 BST<T1,T2>::BST(BST &&bst)  noexcept
@@ -102,6 +122,28 @@ template <typename T1, typename T2>
 BST<T1,T2>::~BST()noexcept{
     
     delete(head);
+}
+
+template <typename T1, typename T2>
+/**
+ overloading the operator= to allow copy assignment
+ */
+BST<T1,T2>& BST<T1,T2>::operator=(const BST<T1,T2>& bst) noexcept {
+    
+    if(&bst == this) return *this;
+    clear();
+    if constexpr (std::is_same<T2,std::string>::value){     //if the value is a string
+        root = nullptr;
+        head = new Node<T1,T2>{std::make_pair(NULL,""),root,root};
+    }
+    else{                                                   //if the value is not a string
+        root = nullptr;
+        head = new Node<T1,T2>{std::make_pair(NULL,NULL),root,root};
+    }
+    n_nodes = 0;
+    height=0;
+    recursiveInsert(bst.root);
+    return *this;
 }
 
 template <typename T1, typename T2>
