@@ -8,6 +8,7 @@
 
 #include "node.h"
 #include <vector>
+#include <typeinfo>
 
 
 
@@ -41,10 +42,10 @@ class BST{
     BST<T1,T2>& operator=(const BST<T1,T2>&& bst) noexcept;
 
     
-    Node<T1,T2>*  begin();
+    Node<T1,T2>* begin();
     const Node<T1,T2>* cbegin();
-    Node<T1,T2>*  end();
-    const Node<T1,T2>* cend();
+    Node<T1,T2>* end();
+    Node<T1,T2>* cend() const;
     void insert(T1 key,T2 value);
     void print();
     void clear();
@@ -178,8 +179,8 @@ template <typename T1, typename T2>
 /**
  function that reutrn a const pointer to the first node
  */
-const Node<T1,T2>* BST<T1,T2>::cbegin(){
-    return(const_cast<const Node<T1,T2>*>(root));
+ const Node<T1,T2>* BST<T1,T2>::cbegin(){
+    return(const_cast< const Node<T1,T2>*>(root));
 }
 
 template <typename T1, typename T2>
@@ -187,15 +188,15 @@ template <typename T1, typename T2>
     function that returns a pointer to the deepest node of the tree
 */
 Node<T1,T2>* BST<T1,T2>::end(){
-        return tail;
+    return tail;
 }
 
 template <typename T1, typename T2>
 /**
     function that returns a const pointer to the deepest node of the tree
 */
-const Node<T1,T2>* BST<T1,T2>::cend(){
-        return(const_cast<const Node<T1,T2>*>(tail));
+Node<T1,T2>* BST<T1,T2>::cend() const{
+    return(const_cast< Node<T1,T2> * const >(tail));
 }
 
 template <typename T1, typename T2>
