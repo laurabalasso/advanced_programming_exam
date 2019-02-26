@@ -43,7 +43,7 @@ class BST{
 
     
     Node<T1,T2>* begin();
-    const Node<T1,T2>* cbegin();
+    Node<T1,T2>* cbegin() const;
     Node<T1,T2>* end();
     Node<T1,T2>* cend() const;
     void insert(T1 key,T2 value);
@@ -179,8 +179,8 @@ template <typename T1, typename T2>
 /**
  function that reutrn a const pointer to the first node
  */
- const Node<T1,T2>* BST<T1,T2>::cbegin(){
-    return(const_cast< const Node<T1,T2>*>(root));
+ Node<T1,T2>* BST<T1,T2>::cbegin() const{
+    return(const_cast< Node<T1,T2> * const >(root));
 }
 
 template <typename T1, typename T2>
