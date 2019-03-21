@@ -1,34 +1,32 @@
-/**
-    node.h
-    object: define a Node struct that represents a single node of a binary search tree
-*/
-
-#ifndef __node__
-#define __node__
-
-#include <utility>
 #include <iostream>
+#include <utility>
+#include <memory>
 
-template <typename T1, typename T2>
- 
+template <class T1, class T2>
+
 struct Node{
-    std::pair<T1,T2> node_pair;
-    Node<T1,T2>* left;
-    Node<T1,T2>* right;
-    template <class t, class u>
-    friend std::ostream& operator<<(std::ostream& os, const Node<t,u>* node);
-    ~Node(){};
-};
 
-template <class t, class u>
-/**
- overloading the operator<< in order to print key:value of a node
- */
-std::ostream& operator<<(std::ostream& os, const Node<t,u>* node){
+    std::pair<const T1,T2> np;
+    std::unique_ptr<Node<T1,T2>> left;
+    std::unique_ptr<Node<T1,T2>> right;
+    Node* parent;
+
+    Node(const std::pair<T1,T2>& pair, Node* p):
+    np{pair},
+    left{nullptr},
+    right{nullptr},
+    parent{p}{}
+    Node(const std::pair<T1,T2>& pair):
+    np{pair},
+    left{nullptr},
+    right{nullptr},
+    parent{nullptr}{}
+    Node(const std::pair<T1,T2>& pair,Node* l,Node* r,Node* p):
+    np{pair},
+    left{l},
+    right{r},
+    parent{p}{}
     
-    os<<"( key: "<<node->node_pair.first<<", value: "<<node->node_pair.second<<" )";
-    return os;
-}
+    ~Node() noexcept = default;
 
-
-#endif
+};

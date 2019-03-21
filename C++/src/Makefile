@@ -1,7 +1,7 @@
 SRC = main.cpp
 EXE = bst
 CXX = g++
-CXXFLAGS = -g -std=c++17 -Wall -Wextra
+CXXFLAGS = -g -std=c++14 -Wall -Wextra
 INC = bst.h node.h
 
 all: $(EXE)
